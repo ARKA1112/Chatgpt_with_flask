@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>D3.js Line Chart Example</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+  </head>
+  <body>
+    <svg width="600" height="400"></svg>
+    <script>
+      // Sample data
+      const data = [
+        {x: 1, y: 10},
+        {x: 2, y: 20},
+        {x: 3, y: 15},
+        {x: 4, y: 25},
+        {x: 5, y: 18},
+      ];
+
+      // Set the dimensions and margins of the chart
+      const margin = {top: 20, right: 20, bottom: 30, left: 50},
+            width = 600 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
+
+      // Create the SVG element and set its dimensions
+      const svg = d3.select("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      // Set the range of the x-axis and y-axis
+      const x = d3.scaleLinear().domain([1, 5]).range([0, width]);
+      const y = d3.scaleLinear().domain([0, 25]).range([height, 0]);
+
+      // Add the x-axis and y-axis to the chart
+      svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
+      svg.append("g")
+        .call(d3.axisLeft(y));
+
+      // Add the line
+      svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.line()
+          .x(function(d) { return x(d.x) })
+          .y(function(d) { return y(d.y) })
+        );
+    </script>
+  </body>
+</html>
